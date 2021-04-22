@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+      <NpmDependencies>
+          <NpmPackage Name="hamburger-react" Version="2.4.0" ResolutionStrategy="Max" />
+      </NpmDependencies>
+      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+      <Authors>Compositional IT</Authors>
+      <Company>Compositional IT</Company>
+      <Description />
+      <PackageProjectUrl>https://github.com/CompositionalIT/feliz-hamburger-react</PackageProjectUrl>
+      <Version>0.0.1</Version>
+      <RepositoryUrl>https://github.com/CompositionalIT/feliz-hamburger-react</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="paket.references" />
+    <Compile Include="Feliz.ReactHamburger.fs" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+  <ItemGroup>
+      <Content Include="*.fsproj; **\*.fs; **\*.fsi" PackagePath="fable\" />
+  </ItemGroup>
+</Project>
