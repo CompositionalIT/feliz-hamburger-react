@@ -13,10 +13,15 @@
       <Company>Compositional IT</Company>
       <Description />
       <PackageProjectUrl>https://github.com/CompositionalIT/feliz-hamburger-react</PackageProjectUrl>
-      <Version>0.0.1</Version>
+      <Version>0.0.2</Version>
       <RepositoryUrl>https://github.com/CompositionalIT/feliz-hamburger-react</RepositoryUrl>
+      <PackageIcon>CIT-logo.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\..\CIT-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="paket.references" />
     <Compile Include="Feliz.ReactHamburger.fs" />
   </ItemGroup>
