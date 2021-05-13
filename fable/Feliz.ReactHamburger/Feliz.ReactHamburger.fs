@@ -63,21 +63,31 @@ type LineDistance =
                     | Large -> "lg"
                     | Medium -> "md"
 
-type ReactHamburger =
-    static member inline toggled (v: bool) = "toggled" ==> v
-    static member inline size (s: int) = "toggled" ==> s
-    static member inline direction (d: Direction) = "direction" ==> (d.ToString().ToLower())
-    static member inline duration (t: float) = "duration" ==> t
-    static member inline lineDistance (d: LineDistance) = "distance" ==> (LineDistance.toPropValue d)
-    static member inline toggle (f) = "toggle" ==> f
-    static member inline color (s: string) = "color" ==> s
-    static member inline easing (s: string) = "easing" ==> s
-    static member inline onToggle (f) = "onToggle" ==> f
-    static member inline rounded (b: bool) = "rounded" ==> b
-    static member inline hideOutline (b: bool) = "hideOutline" ==> b
+type IReactHamburgerProperty = interface end
 
-    static member inline hamburgerType (h: Hamburger) = "hamburgerType" ==> (h |> Hamburger.importLib)
-    static member create props =
+let (=>) key value = unbox<IReactHamburgerProperty>(key ==> value)
+
+
+type ReactHamburger =
+    static member inline toggled (v: bool) = "toggled" => v
+    static member inline rounded (b: bool) = "rounded" => b
+    static member inline hideOutline (b: bool) = "hideOutline" => b
+
+    static member inline size (s: int) = "toggled" => s
+    static member inline duration (t: float) = "duration" => t
+
+    static member inline direction (d: Direction) = "direction" => (d.ToString().ToLower())
+    static member inline lineDistance (d: LineDistance) = "distance" => (LineDistance.toPropValue d)
+    static member inline hamburgerType (h: Hamburger) = "hamburgerType" => (h |> Hamburger.importLib)
+
+    static member inline toggle (f) = "toggle" => f
+    static member inline onToggle (f) = "onToggle" => f
+
+    static member inline color (s: string) = "color" => s
+    static member inline easing (s: string) = "easing" => s
+    static member inline label (s: string) = "easing" => s
+
+    static member create (props: IReactHamburgerProperty list) =
         let givenProps = !!props
 
         let importType =
