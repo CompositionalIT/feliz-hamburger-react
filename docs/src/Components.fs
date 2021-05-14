@@ -384,7 +384,7 @@ ReactHamburger.create [
                                                  Selected = (props.LineDistance = Large)|}]
 
                                         StyledComponents.LabelWithSelect
-                                            "HamburgerType Prop"
+                                            "HamburgerType"
                                             animationButtonConfigs
                                             (fun event -> setProps({ props with Animation = toHamburgerType event.target?value }))
 
