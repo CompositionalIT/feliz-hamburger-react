@@ -200,6 +200,41 @@ type StyledComponents =
             prop.text code
         ]
 
+    static member Select (items: string list) (handler: Browser.Types.Event -> unit)=
+        Html.select [
+            prop.style [
+                //style.backgroundColor (if selected then CitColors.red else "transparent")
+                //style.color (if selected then "white" else CitColors.darkBlue)
+                style.textAlign.center
+                style.width 150
+                style.border(2, borderStyle.solid, CitColors.green)
+                style.borderRadius 5
+                style.padding 8
+                style.height 50
+                style.fontSize 15
+                style.marginBottom 10
+                style.fontWeight.bold
+            ]
+            prop.onChange handler
+            prop.children [
+                for item in items do
+                    Html.option [
+                        prop.style [ style.color CitColors.darkBlue]
+                        prop.value item
+                        prop.text item
+                    ]
+                ]
+            ]
+
+    static member LabelWithSelect (name: string) items handler =
+        Html.div [
+            prop.style [ style.display.flex; style.justifyContent.spaceBetween; style.alignItems.center; style.marginBottom 10 ]
+            prop.children [
+                Html.b name
+                StyledComponents.Select items handler
+            ]
+        ]
+
     static member Footer (children: ReactElement list) =
         Html.div [
             prop.style [
@@ -237,58 +272,36 @@ type Components =
         let (props, setProps) = React.useState(initProps)
 
         let animationButtonConfigs =
-            [ {| Hamburger = "Tilt"
-                 Updater = (fun _ -> setProps({ props with Animation = Tilt }))
-                 Selected = props.Animation = Tilt |}
+            [ "Tilt"
+              "Squash"
+              "Cross"
+              "Twirl"
+              "Fade"
+              "Slant"
+              "Divide"
+              "Pivot"
+              "Turn"
+              "Sling"
+              "Squeeze"
+              "Spin"
+              "Rotate"
+              ]
 
-              {| Hamburger = "Squash"
-                 Updater = (fun _ -> setProps({ props with Animation = Squash }))
-                 Selected = props.Animation = Squash |}
-
-              {| Hamburger = "Cross"
-                 Updater = (fun _ -> setProps({ props with Animation = Cross }))
-                 Selected = props.Animation = Cross |}
-
-              {| Hamburger = "Twirl"
-                 Updater = (fun _ -> setProps({ props with Animation = Twirl }))
-                 Selected = props.Animation = Twirl |}
-
-              {| Hamburger = "Fade"
-                 Updater = (fun _ -> setProps({ props with Animation = Fade }))
-                 Selected = props.Animation = Fade |}
-
-              {| Hamburger = "Slant"
-                 Updater = (fun _ -> setProps({ props with Animation = Slant }))
-                 Selected = props.Animation = Slant |}
-
-              {| Hamburger = "Divide"
-                 Updater = (fun _ -> setProps({ props with Animation = Divide }))
-                 Selected = props.Animation = Divide |}
-
-              {| Hamburger = "Pivot"
-                 Updater = (fun _ -> setProps({ props with Animation = Pivot }))
-                 Selected = props.Animation = Pivot |}
-
-              {| Hamburger = "Turn"
-                 Updater = (fun _ -> setProps({ props with Animation = Turn }))
-                 Selected = props.Animation = Turn |}
-
-              {| Hamburger = "Sling"
-                 Updater = (fun _ -> setProps({ props with Animation = Sling }))
-                 Selected = props.Animation = Sling |}
-
-              {| Hamburger = "Squeeze"
-                 Updater = (fun _ -> setProps({ props with Animation = Squeeze }))
-                 Selected = props.Animation = Squeeze |}
-
-              {| Hamburger = "Spin"
-                 Updater = (fun _ -> setProps({ props with Animation = Spin }))
-                 Selected = props.Animation = Spin |}
-
-              {| Hamburger = "Rotate"
-                 Updater = (fun _ -> setProps({ props with Animation = Rotate }))
-                 Selected = props.Animation = Rotate |} ]
-
+        let toHamburgerType = function
+            | "Tilt" -> Tilt
+            | "Squash" -> Squash
+            | "Cross" -> Cross
+            | "Twirl" -> Twirl
+            | "Fade" -> Fade
+            | "Slant" -> Slant
+            | "Divide" -> Divide
+            | "Pivot" -> Pivot
+            | "Turn" -> Turn
+            | "Sling" -> Sling
+            | "Squeeze" -> Squeeze
+            | "Spin" -> Spin
+            | "Rotate" -> Rotate
+            | _ -> failwith "invalid type"
 
         StyledComponents.Container [
             Html.div [
@@ -336,7 +349,7 @@ ReactHamburger.create [
                         Html.div [
                             prop.children [
                                 StyledComponents.HeadingWithContent
-                                    "Boolean Props"
+                                    "Props"
                                     (Html.div [
                                         StyledComponents.LabelWithCircleButton
                                             "Toggled"
@@ -349,11 +362,7 @@ ReactHamburger.create [
                                         StyledComponents.LabelWithCircleButton
                                             "Hide outline"
                                             (fun _ -> setProps({ props with HideOutLine = not props.HideOutLine }))
-                                            props.HideOutLine ])
-
-                                StyledComponents.HeadingWithContent
-                                    "DU Props"
-                                    (Html.div [
+                                            props.HideOutLine
                                         StyledComponents.OptionButtons
                                             "Direction"
                                             [ {| Name = "Left"
@@ -362,7 +371,6 @@ ReactHamburger.create [
                                               {| Name = "Right"
                                                  Updater = (fun _ -> setProps({ props with Direction = Right}))
                                                  Selected = (props.Direction = Right) |}]
-
                                         StyledComponents.OptionButtons
                                             "Distance"
                                             [ {| Name = "Small"
@@ -374,15 +382,12 @@ ReactHamburger.create [
                                               {| Name = "Large"
                                                  Updater = (fun _ -> setProps({ props with LineDistance = Large }))
                                                  Selected = (props.LineDistance = Large)|}]
-                                    ])
-                                StyledComponents.HeadingWithContent
-                                    "HamburgerType Prop"
-                                    (Html.div [
-                                        for animationButton in animationButtonConfigs do
-                                            StyledComponents.DefaultButton
-                                                animationButton.Hamburger
-                                                animationButton.Updater
-                                                animationButton.Selected
+
+                                        StyledComponents.LabelWithSelect
+                                            "HamburgerType Prop"
+                                            animationButtonConfigs
+                                            (fun event -> setProps({ props with Animation = toHamburgerType event.target?value }))
+
                                     ])
                             ]
                         ]
