@@ -4,7 +4,7 @@ var packageUrl = "https://github.com/CompositionalIT/feliz-hamburger-react.git";
 
 console.log("Publishing to ", packageUrl);
 
-ghPages.publish("public", {
+ghPages.publish("dist", {
     repo: packageUrl
 }, function (e) {
     if (e === undefined) {
