@@ -209,7 +209,7 @@ type StyledComponents =
                 style.width 150
                 style.border(2, borderStyle.solid, CitColors.green)
                 style.borderRadius 5
-                style.padding 8
+                style.padding (0,8)
                 style.height 50
                 style.fontSize 15
                 style.marginBottom 10
@@ -325,15 +325,61 @@ type Components =
                                 ]
                             ])
                         StyledComponents.HeadingWithContent
-                            "Installation"
-                            (StyledComponents.CodeBlock
-                                """cd ./project
+                            "Props"
+                            (Html.div [
+                                StyledComponents.LabelWithCircleButton
+                                    "Toggled"
+                                    (fun _ -> setProps({ props with Toggled = not props.Toggled }))
+                                    props.Toggled
+                                StyledComponents.LabelWithCircleButton
+                                    "Rounded"
+                                    (fun _ -> setProps({ props with Rounded = not props.Rounded }))
+                                    props.Rounded
+                                StyledComponents.LabelWithCircleButton
+                                    "Hide outline"
+                                    (fun _ -> setProps({ props with HideOutLine = not props.HideOutLine }))
+                                    props.HideOutLine
+                                StyledComponents.LabelWithSelect
+                                    "HamburgerType"
+                                    animationButtonConfigs
+                                    (fun event -> setProps({ props with Animation = toHamburgerType event.target?value }))
+                                StyledComponents.OptionButtons
+                                    "Direction"
+                                    [ {| Name = "Left"
+                                         Updater = (fun _ -> setProps({ props with Direction = Left}))
+                                         Selected = (props.Direction = Left) |}
+                                      {| Name = "Right"
+                                         Updater = (fun _ -> setProps({ props with Direction = Right}))
+                                         Selected = (props.Direction = Right) |}]
+                                StyledComponents.OptionButtons
+                                    "Distance"
+                                    [ {| Name = "Small"
+                                         Updater = (fun _ -> setProps({ props with LineDistance = Small }))
+                                         Selected = (props.LineDistance = Small) |}
+                                      {| Name = "Medium"
+                                         Updater = (fun _ -> setProps({ props with LineDistance = Medium }))
+                                         Selected = (props.LineDistance = Medium) |}
+                                      {| Name = "Large"
+                                         Updater = (fun _ -> setProps({ props with LineDistance = Large }))
+                                         Selected = (props.LineDistance = Large)|}]
+
+                            ])
+
+
+                    ]
+                    Html.div [
+                        Html.div [
+                            prop.children [
+                                StyledComponents.HeadingWithContent
+                                    "Installation"
+                                    (StyledComponents.CodeBlock
+                                        """cd ./project
 femto install Feliz.ReactHamburger""" )
 
-                        StyledComponents.HeadingWithContent
-                            "Sample Code"
-                            (StyledComponents.CodeBlock
-                            """
+                                StyledComponents.HeadingWithContent
+                                    "Sample Code"
+                                    (StyledComponents.CodeBlock
+                                    """
 ReactHamburger.create [
     ReactHamburger.hamburgerType Tilt
     ReactHamburger.direction Left
@@ -342,53 +388,7 @@ ReactHamburger.create [
     ReactHamburger.rounded false
     ReactHamburger.lineDistance Small
 ]
-                            """ )
-
-                    ]
-                    Html.div [
-                        Html.div [
-                            prop.children [
-                                StyledComponents.HeadingWithContent
-                                    "Props"
-                                    (Html.div [
-                                        StyledComponents.LabelWithCircleButton
-                                            "Toggled"
-                                            (fun _ -> setProps({ props with Toggled = not props.Toggled }))
-                                            props.Toggled
-                                        StyledComponents.LabelWithCircleButton
-                                            "Rounded"
-                                            (fun _ -> setProps({ props with Rounded = not props.Rounded }))
-                                            props.Rounded
-                                        StyledComponents.LabelWithCircleButton
-                                            "Hide outline"
-                                            (fun _ -> setProps({ props with HideOutLine = not props.HideOutLine }))
-                                            props.HideOutLine
-                                        StyledComponents.OptionButtons
-                                            "Direction"
-                                            [ {| Name = "Left"
-                                                 Updater = (fun _ -> setProps({ props with Direction = Left}))
-                                                 Selected = (props.Direction = Left) |}
-                                              {| Name = "Right"
-                                                 Updater = (fun _ -> setProps({ props with Direction = Right}))
-                                                 Selected = (props.Direction = Right) |}]
-                                        StyledComponents.OptionButtons
-                                            "Distance"
-                                            [ {| Name = "Small"
-                                                 Updater = (fun _ -> setProps({ props with LineDistance = Small }))
-                                                 Selected = (props.LineDistance = Small) |}
-                                              {| Name = "Medium"
-                                                 Updater = (fun _ -> setProps({ props with LineDistance = Medium }))
-                                                 Selected = (props.LineDistance = Medium) |}
-                                              {| Name = "Large"
-                                                 Updater = (fun _ -> setProps({ props with LineDistance = Large }))
-                                                 Selected = (props.LineDistance = Large)|}]
-
-                                        StyledComponents.LabelWithSelect
-                                            "HamburgerType"
-                                            animationButtonConfigs
-                                            (fun event -> setProps({ props with Animation = toHamburgerType event.target?value }))
-
-                                    ])
+                                    """ )
                             ]
                         ]
                     ]
