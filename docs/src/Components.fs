@@ -3,7 +3,6 @@ namespace App
 open Feliz
 open Fable.Core.JsInterop
 open Feliz.ReactHamburger
-open Feliz.Bulma
 
 type CitColors =
     static member lightBlue = "#40a8b7"
