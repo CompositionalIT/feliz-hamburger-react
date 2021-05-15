@@ -76,7 +76,7 @@ type StyledComponents =
                                 ]
                                 prop.src (unbox<string>logo)
                             ]
-                            Html.h2 $"Compositional IT - {wrapperName}"
+                            Html.h2 $"{wrapperName}"
                         ]
                         Html.div [
                             prop.style [ style.display.flex; style.justifyContent.spaceAround; style.alignItems.center ]
@@ -133,49 +133,6 @@ type StyledComponents =
             prop.children [
                 Html.b name
                 StyledComponents.CircleButton updater selected
-            ]
-        ]
-
-    static member OptionButton (buttonLabel: string) updater selected =
-        Html.button [
-            prop.style [
-                style.backgroundColor (if selected then CitColors.green else "transparent")
-                style.color (if selected then "white" else CitColors.darkBlue)
-                style.border(1,borderStyle.none, "")
-                style.borderRight(2, borderStyle.solid, CitColors.green)
-                style.padding 8
-                style.width 150
-                style.height 50
-
-                //style.height (length.percent 100)
-                style.margin 0
-                style.fontWeight.bold
-            ]
-            prop.text buttonLabel
-            prop.onClick updater
-        ]
-
-    static member OptionButtons (groupingName: string) (buttonConfig: {| Name: string; Updater: Browser.Types.MouseEvent -> unit; Selected: bool |} list) =
-        Html.div [
-            prop.style [
-                style.display.flex
-                style.justifyContent.spaceBetween
-                style.alignItems.center
-                style.marginBottom 20
-                style.flexWrap.wrap ]
-            prop.children [
-                Html.b groupingName
-                Html.div [
-                    prop.style [
-                        style.border(2, borderStyle.solid, CitColors.green)
-                        style.borderRight(2, borderStyle.none, CitColors.green)
-                        style.borderRadius 5
-                    ]
-                    prop.children [
-                        for button in buttonConfig do
-                            StyledComponents.OptionButton button.Name button.Updater button.Selected
-                    ]
-                ]
             ]
         ]
 
@@ -310,6 +267,17 @@ type Components =
             | "Rotate" -> Rotate
             | _ -> failwith "invalid type"
 
+        let toDirection = function
+            | "Left" -> Left
+            | "Right" -> Right
+            | _ -> failwith "invalid type"
+
+        let toDistance = function
+            | "Small" -> Small
+            | "Medium" -> Medium
+            | "Large" -> Large
+            | _ -> failwith "invalid type"
+
         StyledComponents.Container [
             Html.div [
                 prop.style [ style.display.flex; style.flexWrap.wrap; style.flexDirection.column ]
@@ -346,32 +314,23 @@ type Components =
                                     "Hide outline"
                                     (fun _ -> setProps({ props with HideOutLine = not props.HideOutLine }))
                                     props.HideOutLine
+
                                 StyledComponents.LabelWithSelect
                                     "HamburgerType"
                                     animationButtonConfigs
                                     (fun event -> setProps({ props with Animation = toHamburgerType event.target?value }))
-                                StyledComponents.OptionButtons
+
+                                StyledComponents.LabelWithSelect
                                     "Direction"
-                                    [ {| Name = "Left"
-                                         Updater = (fun _ -> setProps({ props with Direction = Left}))
-                                         Selected = (props.Direction = Left) |}
-                                      {| Name = "Right"
-                                         Updater = (fun _ -> setProps({ props with Direction = Right}))
-                                         Selected = (props.Direction = Right) |}]
-                                StyledComponents.OptionButtons
-                                    "Distance"
-                                    [ {| Name = "Small"
-                                         Updater = (fun _ -> setProps({ props with LineDistance = Small }))
-                                         Selected = (props.LineDistance = Small) |}
-                                      {| Name = "Medium"
-                                         Updater = (fun _ -> setProps({ props with LineDistance = Medium }))
-                                         Selected = (props.LineDistance = Medium) |}
-                                      {| Name = "Large"
-                                         Updater = (fun _ -> setProps({ props with LineDistance = Large }))
-                                         Selected = (props.LineDistance = Large)|}]
+                                    [ "Left"; "Right" ]
+                                    (fun event -> setProps({ props with Direction = toDirection event.target?value }))
+
+                                StyledComponents.LabelWithSelect
+                                    "Direction"
+                                    [ "Small"; "Medium"; "Large" ]
+                                    (fun event -> setProps({ props with LineDistance = toDistance event.target?value }))
+
                             ])
-
-
                     ]
                     Html.div [
                         Html.div [
