@@ -129,7 +129,7 @@ type StyledComponents =
 
     static member LabelWithCircleButton (name: string) updater selected =
         Html.div [
-            prop.style [ style.display.flex; style.justifyContent.spaceBetween; style.alignItems.center; style.marginBottom 10 ]
+            prop.style [ style.display.flex; style.justifyContent.spaceBetween; style.alignItems.center; style.marginBottom 20 ]
             prop.children [
                 Html.b name
                 StyledComponents.CircleButton updater selected
@@ -161,7 +161,7 @@ type StyledComponents =
                 style.display.flex
                 style.justifyContent.spaceBetween
                 style.alignItems.center
-                style.marginBottom 10
+                style.marginBottom 20
                 style.flexWrap.wrap ]
             prop.children [
                 Html.b groupingName
@@ -235,7 +235,7 @@ type StyledComponents =
 
     static member LabelWithSelect (name: string) items handler =
         Html.div [
-            prop.style [ style.display.flex; style.justifyContent.spaceBetween; style.alignItems.center; style.marginBottom 10 ]
+            prop.style [ style.display.flex; style.justifyContent.spaceBetween; style.alignItems.center; style.marginBottom 20 ]
             prop.children [
                 Html.b name
                 StyledComponents.Select items handler
