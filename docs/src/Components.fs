@@ -3,6 +3,7 @@ namespace App
 open Feliz
 open Fable.Core.JsInterop
 open Feliz.ReactHamburger
+open Feliz.Bulma
 
 type CitColors =
     static member lightBlue = "#40a8b7"
@@ -116,7 +117,7 @@ type StyledComponents =
     static member CircleButton updateProp selected =
         Html.button [
             prop.style [
-                style.backgroundColor (if selected then CitColors.lightBlue else "lightgrey")
+                style.backgroundColor (if selected then CitColors.green else "lightgrey")
                 style.padding 10
                 style.border(1, borderStyle.none, "")
                 style.borderRadius 50
@@ -144,7 +145,9 @@ type StyledComponents =
                 style.borderRight(2, borderStyle.solid, CitColors.green)
                 style.padding 8
                 style.width 150
-                style.height (length.percent 100)
+                style.height 50
+
+                //style.height (length.percent 100)
                 style.margin 0
                 style.fontWeight.bold
             ]
@@ -154,7 +157,12 @@ type StyledComponents =
 
     static member OptionButtons (groupingName: string) (buttonConfig: {| Name: string; Updater: Browser.Types.MouseEvent -> unit; Selected: bool |} list) =
         Html.div [
-            prop.style [ style.display.flex; style.justifyContent.spaceBetween; style.alignItems.center; style.marginBottom 10; style.flexWrap.wrap ]
+            prop.style [
+                style.display.flex
+                style.justifyContent.spaceBetween
+                style.alignItems.center
+                style.marginBottom 10
+                style.flexWrap.wrap ]
             prop.children [
                 Html.b groupingName
                 Html.div [
@@ -201,10 +209,9 @@ type StyledComponents =
         ]
 
     static member Select (items: string list) (handler: Browser.Types.Event -> unit)=
+
         Html.select [
             prop.style [
-                //style.backgroundColor (if selected then CitColors.red else "transparent")
-                //style.color (if selected then "white" else CitColors.darkBlue)
                 style.textAlign.center
                 style.width 150
                 style.border(2, borderStyle.solid, CitColors.green)
@@ -212,9 +219,9 @@ type StyledComponents =
                 style.padding (0,8)
                 style.height 50
                 style.fontSize 15
-                style.marginBottom 10
                 style.fontWeight.bold
             ]
+            prop.className "center-select"
             prop.onChange handler
             prop.children [
                 for item in items do
@@ -362,7 +369,6 @@ type Components =
                                       {| Name = "Large"
                                          Updater = (fun _ -> setProps({ props with LineDistance = Large }))
                                          Selected = (props.LineDistance = Large)|}]
-
                             ])
 
 
